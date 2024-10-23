@@ -68,20 +68,24 @@ class Balloon(pygame.sprite.Sprite):
         """
         instruction_index = 0
         command_index = 1
+        position_x = 0
+        position_y = 1
         # Set the current move direcdtion based off the move command being sent
         if bloon_movement[self.movement_command_index][instruction_index] == "move_command":
-            self.direction_to_move_x = bloon_movement[self.movement_command_index][command_index][0] * self.balloon_speed_x
-            self.direction_to_move_y = bloon_movement[self.movement_command_index][command_index][1] * self.balloon_speed_y
+            self.direction_to_move_x = bloon_movement[self.movement_command_index][command_index][position_x] * self.balloon_speed_x
+            self.direction_to_move_y = bloon_movement[self.movement_command_index][command_index][position_y] * self.balloon_speed_y
             self.movement_command_index += 1
         # Otherwise just wait for the balloons to reach the points
         elif bloon_movement[self.movement_command_index][instruction_index] == "wait_for_point" \
              and bloon_movement[self.movement_command_index][command_index][0] == int(self.position_x) \
              and bloon_movement[self.movement_command_index][command_index][1] == int(self.position_y):
             self.movement_command_index += 1
-
-        self.position_x += self.direction_to_move_x
-        self.position_y += self.direction_to_move_y
+        else:
+            self.position_x += self.direction_to_move_x
+            self.position_y += self.direction_to_move_y
+        
         self.rect.center = (self.position_x, self.position_y)
+        
 
     def can_destroy_balloon(self):
         """
@@ -99,3 +103,17 @@ class Balloon(pygame.sprite.Sprite):
         :return: The current balloon health
         """
         return self.balloon_health
+    
+    def get_balloon_position_x(self):
+        """
+        This function is used to get the balloon position x
+        :return: The relative position of the balloon position x
+        """
+        return self.rect.centerx
+    
+    def get_balloon_position_y(self):
+        """
+        This function is used to get the balloon position y
+        :return: The relative position of the balloon position y
+        """
+        return self.rect.centery
