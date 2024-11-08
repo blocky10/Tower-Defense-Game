@@ -353,6 +353,183 @@ easy_map_rounds = [
                             constants.ENEMY_HEALTH: constants.STRONG_DOG_HEALTH,
                             constants.ENEMY_SPEED: constants.STRONG_DOG_SPEED,
                             constants.ENEMY_IMAGE_SIZE: constants.STRONG_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 21
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.STRONG_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 20,
+                            constants.ENEMY_HEALTH: constants.STRONG_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.STRONG_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.STRONG_DOG_IMAGE_SIZE
                         },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_FAST_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 15,
+                            constants.ENEMY_HEALTH: constants.GIANT_FAST_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_FAST_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_FAST_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 22
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.ANGRY_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 10,
+                            constants.ENEMY_HEALTH: constants.ANGRY_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.ANGRY_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.ANGRY_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_STRONG_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 1,
+                            constants.ENEMY_HEALTH: constants.GIANT_STRONG_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_STRONG_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_STRONG_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.ANGRY_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 10,
+                            constants.ENEMY_HEALTH: constants.ANGRY_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.ANGRY_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.ANGRY_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 23
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_STRONG_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 3,
+                            constants.ENEMY_HEALTH: constants.GIANT_STRONG_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_STRONG_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_STRONG_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 24
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_NORMAL_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 10,
+                            constants.ENEMY_HEALTH: constants.GIANT_NORMAL_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_NORMAL_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_NORMAL_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_FAST_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 10,
+                            constants.ENEMY_HEALTH: constants.GIANT_FAST_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_FAST_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_FAST_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_STRONG_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 3,
+                            constants.ENEMY_HEALTH: constants.GIANT_STRONG_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_STRONG_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_STRONG_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 25
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_ANGRY_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 5,
+                            constants.ENEMY_HEALTH: constants.GIANT_ANGRY_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_ANGRY_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_ANGRY_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 26
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_FAST_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 30,
+                            constants.ENEMY_HEALTH: constants.GIANT_FAST_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_FAST_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_FAST_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 27
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_NORMAL_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 10,
+                            constants.ENEMY_HEALTH: constants.GIANT_NORMAL_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_NORMAL_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_NORMAL_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_STRONG_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 5,
+                            constants.ENEMY_HEALTH: constants.GIANT_STRONG_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_STRONG_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_STRONG_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 28
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_ANGRY_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 20,
+                            constants.ENEMY_HEALTH: constants.GIANT_ANGRY_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_ANGRY_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_ANGRY_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 29
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_ANGRY_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 3,
+                            constants.ENEMY_HEALTH: constants.GIANT_ANGRY_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_ANGRY_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_ANGRY_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_STRONG_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 5,
+                            constants.ENEMY_HEALTH: constants.GIANT_STRONG_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_STRONG_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_STRONG_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_NORMAL_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 10,
+                            constants.ENEMY_HEALTH: constants.GIANT_NORMAL_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_NORMAL_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_NORMAL_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_FAST_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 20,
+                            constants.ENEMY_HEALTH: constants.GIANT_FAST_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_FAST_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_FAST_DOG_IMAGE_SIZE
+                        }
+                    ],
+                    # Round 30
+                    [
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_ANGRY_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 15,
+                            constants.ENEMY_HEALTH: constants.GIANT_ANGRY_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_ANGRY_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_ANGRY_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.GIANT_STRONG_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 5,
+                            constants.ENEMY_HEALTH: constants.GIANT_STRONG_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.GIANT_STRONG_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.GIANT_STRONG_DOG_IMAGE_SIZE
+                        },
+                        {
+                            constants.ENEMY_IMAGE: constants.KING_DOG_IMAGE,    
+                            constants.NUMBER_OF_ENEMIES: 1,
+                            constants.ENEMY_HEALTH: constants.KING_DOG_HEALTH,
+                            constants.ENEMY_SPEED: constants.KING_DOG_SPEED,
+                            constants.ENEMY_IMAGE_SIZE: constants.KING_DOG_IMAGE_SIZE
+                        }
                     ]
                 ]

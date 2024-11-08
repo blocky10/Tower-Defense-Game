@@ -6,7 +6,7 @@ class Enemy(pygame.sprite.Sprite):
     This Enemy class is a sprite object that traverses across
     a path via checkpoints
     """
-    def __init__(self, waypoints, enemy_image, number_of_enemies, enemy_health, speed, 
+    def __init__(self, checkpoints, enemy_image, number_of_enemies, enemy_health, speed, 
                  distance_travelled, scale_factor):
         """
         """
@@ -17,8 +17,10 @@ class Enemy(pygame.sprite.Sprite):
         height = self.image.get_height()
         self.image = pygame.transform.scale(self.image, (int(width * 0.1), int(height * 0.1)))
         self.rect = self.image.get_rect()
-        self.waypoints = waypoints
-        self.pos = Vector2(waypoints[0])
+        self.checkpoints = checkpoints
+
+        self.first_checkpoint_idx = 0
+        self.pos = Vector2(checkpoints[self.first_checkpoint_idx])
         self.rect.center = self.pos
         self.number_of_enemies = number_of_enemies
 
@@ -37,11 +39,14 @@ class Enemy(pygame.sprite.Sprite):
         This function is used to update the movement of the enemy
         :return:
         """
+
+        # No longer update the enemy position if the lives is 0
         if tower_defense_player.get_lives() == 0:
             return
-
-        if self.movement_command_index < len(self.waypoints):
-            self.target = Vector2(self.waypoints[self.movement_command_index])
+        
+        # Update the movements based off the checkpoints passed
+        if self.movement_command_index < len(self.checkpoints):
+            self.target = Vector2(self.checkpoints[self.movement_command_index])
             self.movement = self.target - self.pos
         else:
             enemy_group.remove(self)
@@ -59,10 +64,6 @@ class Enemy(pygame.sprite.Sprite):
             self.movement_command_index += 1
 
         self.rect.center = self.pos
-        
-    
-    def update_enemy_stats(self):
-        pass
 
     def update_number_of_enemies(self, number_of_enemies):
         """

@@ -4,22 +4,23 @@ from pygame import mixer
 
 class Tower(pygame.sprite.Sprite):
     """
-    This tower class is used 
+    This tower class is an object that is placed on the field in the tower defense game
     """
-    def __init__(self, tower_type, image, x, y, cost, tower_radius, tower_fired, attack_speed,
-                 attack_power, upgrade_level, has_piercing, sell_price, animation_list):
+    def __init__(self, tower_type, image, position_x, position_y, cost, tower_radius, 
+                 tower_fired, attack_speed, attack_power, upgrade_level, has_piercing, 
+                 sell_price, animation_list):
         super().__init__()
         self.image = pygame.image.load(image)
         self.image = pygame.transform.rotate(self.image, 0)
         self.image = pygame.transform.scale(self.image, (100, 100))
         self.cost = cost
-        self.x = x
-        self.y = y
+        self.position_x = position_x
+        self.position_y = position_y
         self.tower_radius = tower_radius
         self.attack_speed = attack_speed
         self.attack_power = attack_power
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
+        self.rect.center = (position_x, position_y)
         self.is_tower_fired = tower_fired
         self.tower_type = tower_type
         self.upgrade_level = upgrade_level
@@ -42,18 +43,25 @@ class Tower(pygame.sprite.Sprite):
         :return:
         """
         self.rect.center = (x, y)
-        self.x = x
-        self.y = y
+        self.position_x = x
+        self.position_y = y
         if can_place:
             pygame.draw.circle(screen, (255, 255, 255), (int(self.rect.centerx), int(self.rect.centery)), self.tower_radius, 1)
         else:
             pygame.draw.circle(screen, (255, 0, 0), ((int)(self.rect.centerx), (int)(self.rect.centery)), self.tower_radius, 1)
 
     def select_upgrade_tower(self, screen):
+        """
+        This function is used to draw a circle around the upgraded tower
+        :param: screen: The screen to draw the circle around the selected tower
+        """
         pygame.draw.circle(screen, (255, 255, 255), (int(self.rect.centerx), int(self.rect.centery)), self.tower_radius, 1)
 
     def upgrade_tower(self, tower_defense_player):
-        
+        """
+        This function is used to upgrade the tower defense tower
+        :param: tower_defense_player: The player who is playing tower defense
+        """
         if self.upgrade_level == 0 and tower_defense_player.get_cash() >= 200: 
             self.upgrade_attack_speed()
             tower_defense_player.update_cash(tower_defense_player.get_cash() - 200)
@@ -76,15 +84,31 @@ class Tower(pygame.sprite.Sprite):
         self.upgrade_level += 1
 
     def upgrade_attack_speed(self):
+        """
+        This function is used to upgrade the attack speed
+        :return:
+        """
         self.attack_speed *= 1.5
 
     def upgrade_attack_range(self):
+        """
+        This function is used to upgrade the attack range
+        :return:
+        """
         self.tower_radius += 50
 
     def upgrade_attack_power(self):
+        """
+        This function is used to upgrade the attack power
+        :return:
+        """
         self.attack_power *= 2
 
     def upgrade_piercing(self):
+        """
+        This function is used to upgrade the tower to use piercing
+        :return:
+        """
         self.has_piercing = True
         self.max_piercing_count += 1
 
@@ -101,7 +125,7 @@ class Tower(pygame.sprite.Sprite):
         self.update_tower_direction_facing(bullet_coordinate_x, bullet_coordinate_y)
         
         # Create a bullet object that will be fired
-        self.bullet = Bullet(bullet_image, self.x, self.y, bullet_coordinate_x, 
+        self.bullet = Bullet(bullet_image, self.position_x, self.position_y, bullet_coordinate_x, 
                              bullet_coordinate_y, self.tower_radius, self.attack_speed)
         
         self.set_tower_fired(True)
@@ -145,10 +169,7 @@ class Tower(pygame.sprite.Sprite):
                     position_x = enemy.get_enemy_position_x()
                     position_y = enemy.get_enemy_position_y()
                     screen.blit((pop_animation), (position_x - 30, position_y - 30))
-
                     enemy_group.remove(enemy)
-                else:
-                    enemy.update_enemy_stats()
 
                 # If the bullet has piercing, then check whether it's piercing count is greater than 1
                 if self.has_piercing:
@@ -190,15 +211,24 @@ class Tower(pygame.sprite.Sprite):
         #  
         #  But anything else smaller than r is also valid since it still lies within the circle
         #
-        if self.get_enemy_distance(enemy_coordinate_x, enemy_coordinate_y, self.x, self.y) <= self.tower_radius:
+        if self.get_enemy_distance(enemy_coordinate_x, enemy_coordinate_y, self.position_x, self.position_y) <= self.tower_radius:
             return True
         
         return False
     
     def get_sell_price(self):
+        """
+        This function gets the tower sell price
+        :return: The tower sell price
+        """
         return self.sell_price
     
     def set_sell_price(self, sell_price):
+        """
+        This function is used to set the tower sell price
+        :param: sell_price: The sell price to set
+        :return:
+        """
         self.sell_price = sell_price
 
     def set_tower_fired(self, tower_fired):
@@ -218,29 +248,44 @@ class Tower(pygame.sprite.Sprite):
     
     def get_tower_position_x(self):
         """
-        This function gets the tower position x
+        This function gets the tower center position x
+        :return: The tower center position x
         """
         return self.rect.centerx
 
     def get_tower_position_y(self):
         """
-        This function gets the tower position y
+        This function gets the tower center position y
+        :return: The tower center position y
         """
         return self.rect.centery
     
     def get_tower_top_left_position(self):
+        """
+        This function gets the tower top left position
+        :return: The tower top left position
+        """
         return self.rect.topleft
     
     def get_tower_bottom_right_position(self):
+        """
+        This function gets the tower bottom right position
+        :return: The tower bottom right position
+        """
         return self.rect.bottomright
     
     def get_tower_width(self):
         """
         This function gets the width of the tower
+        :return: The width of the tower
         """
         return self.rect.width
 
     def get_tower_height(self):
+        """
+        This function is used to get the tower height
+        :return: The height of the tower
+        """
         return self.rect.height
     
     def get_cost(self):
@@ -251,9 +296,17 @@ class Tower(pygame.sprite.Sprite):
         return self.cost
     
     def get_tower_type(self):
+        """
+        This function is used to get the tower type
+        :return: The tower type
+        """
         return self.tower_type
     
     def get_tower_upgrade_level(self):
+        """
+        This function is used to get the upgrade level
+        :return: The upgrade level
+        """
         return self.upgrade_level
 
     def get_enemy_distance(self, enemy_coordinate_x, enemy_coordinate_y, tower_coordinate_x, tower_coordinate_y):
@@ -264,11 +317,16 @@ class Tower(pygame.sprite.Sprite):
         return math.sqrt((enemy_coordinate_x - tower_coordinate_x) ** 2 + (enemy_coordinate_y - tower_coordinate_y) ** 2)
     
     def update_tower_direction_facing(self, enemy_coordinate_x, enemy_coordinate_y):
-        x_dist = enemy_coordinate_x - self.x
-        y_dist = enemy_coordinate_y - self.y
+        """
+        This function updates the direction the tower faces
+        :param: enemy_coordinate_x: The coordinate x of the enemy to face
+        :param: enemy_coordinate_y: The coordinate y of the enemy to face
+        """
+        x_dist = enemy_coordinate_x - self.position_x
+        y_dist = enemy_coordinate_y - self.position_y
         angle = math.degrees(math.atan2(-y_dist, x_dist))
 
-        # This is since the image is offset by 90 degrees
+        # This is since the image is offset by 270 degrees
         angle = ((angle % 360) + 270) % 360
 
         self.image = pygame.image.load(self.animation_list[self.frame_index])
@@ -276,17 +334,27 @@ class Tower(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (120, 120))
 
         self.rect = self.image.get_rect()
-        self.rect.center = (self.x, self.y)
+        self.rect.center = (self.position_x, self.position_y)
         
         self.frame_index = self.frame_index + 1 if self.frame_index + 1 < len(self.animation_list) else 0
 
     def update_target(self):
+        """
+        This function is used to update the target based on button click
+        """
         self.target_index = self.target_index + 1 if self.target_index + 1 < len(self.target) else 0
 
     def get_target(self):
+        """
+        This function is used to get the target type
+        :return: The current target type (close, first, last, strong)
+        """
         return self.target[self.target_index]
 
 class Bullet(pygame.sprite.Sprite):
+    """
+    The bullet is an object that is fired by the tower
+    """
     def __init__(self, image, x, y, position_to_fire_x, position_to_fire_y, bullet_radius, attack_speed):
         super().__init__()
         self.image = pygame.image.load(image)

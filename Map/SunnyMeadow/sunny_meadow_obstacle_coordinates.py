@@ -1,4 +1,4 @@
-obstacle_position = [
+sunny_meadow_obstacle_position = [
     [(0, 364), (300, 436)],
     [(200, 73), (300, 364)],
     [(300, 73), (500, 146)],

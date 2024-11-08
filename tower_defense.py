@@ -8,7 +8,7 @@ from pygame import mixer
 from Enemy.enemy import Enemy
 from Map.SunnyMeadow.sunny_meadow_map_coordinates import sunny_meadow_bloon_movement
 from Map.DeadEnd.dead_end_map_coordinates import dead_end_bloon_movement
-from Map.SunnyMeadow.sunny_meadow_obstacle_coordinates import obstacle_position
+from Map.SunnyMeadow.sunny_meadow_obstacle_coordinates import sunny_meadow_obstacle_position
 from Map.DeadEnd.dead_end_map_obstacle_coordinates import dead_end_obstacle_position
 from rounds import easy_map_rounds
 from CatPanel.CatPanelButton import Button
@@ -16,16 +16,22 @@ import constants
 
 import sys
 import math
-
+import os
 from heapq import heappush, heapify
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 pygame.init()
 mixer.init()
 screen = pygame.display.set_mode([constants.SCREEN_RESOLUTION_WIDTH, constants.SCREEN_RESOLUTION_HEIGHT])
 
-# All rounds and enemies
-
-
+# Using global variable since pygame is single threaded, and will not cause race condition
 # This is used to store the list of coordinates to move the enemy
 enemy_movement_instructions = []
 # This is used to save the obstacle positions of the map field and towers 
@@ -34,9 +40,8 @@ obstacle_positions = []
 rounds = []
 
 class TowerDefenseGame:
-    def __init__(self, screen, background_color):
+    def __init__(self, screen):
         self.screen = screen
-        self.background_colour = background_color
         self.play_status = False
         self.round_started = False
         self.enemy_round_counter = 0
@@ -168,7 +173,8 @@ class TowerDefenseGame:
 
     def start_tower_defense_game(self, map_name):
         """
-        This function is used to start the tower defense game for sunny meadow map
+        This function is used to start the tower defense game for any map
+        :param: map_name: The map to play for tower defense
         :return:
         """
         global obstacle_positions, enemy_movement_instructions, rounds
@@ -186,7 +192,7 @@ class TowerDefenseGame:
             enemy_movement_instructions = dead_end_bloon_movement
 
         if map_name == constants.SUNNY_MEADOW_MAP:
-            for obstacle in obstacle_position:
+            for obstacle in sunny_meadow_obstacle_position:
                 obstacle_positions.append(obstacle)
         elif map_name == constants.DEAD_END_MAP:
             for obstacle in dead_end_obstacle_position:
@@ -259,7 +265,7 @@ class TowerDefenseGame:
             tower_group.draw(self.screen)
             weapon_group.draw(self.screen)
 
-            if tower_defense_player.get_lives() == 0 or tower_defense_player.get_round() == 31:
+            if tower_defense_player.get_lives() == 0 or tower_defense_player.get_round() == constants.FINAL_ROUND:
                 end_game_text = "Game Over!" if tower_defense_player.get_lives() == 0 else "You Win!"
                 end_game_status_text = self.font5.render(end_game_text, True, (255, 255, 255))
 
@@ -288,6 +294,7 @@ class TowerDefenseGame:
     def load_background(self, map_name):
         """
         This function is used to load the background
+        :param: map_name: The map to load the background off
         """
         map_image = ""
         if map_name == "sunny_meadow":
@@ -327,6 +334,13 @@ class TowerDefenseGame:
         self.screen.blit((name2), (1025, 270))
 
     def reset_round_stats(self, tower_group, enemy_group, weapon_group):
+        """
+        This function is used to reset the round statistics
+        :param: tower_group: The list of towers
+        :param: enemy_group: The list of enemies
+        :param: weapon_group: The list of weapons
+        :return:
+        """
         global obstacle_positions
         for tower in tower_group:
             tower_group.remove(tower)
@@ -366,7 +380,7 @@ class TowerDefenseGame:
                 self.enemy_round_counter += 1
                 self.current_enemy_count = 0
             else:
-                enemy_group.add(Enemy(waypoints=enemy_movement_instructions,
+                enemy_group.add(Enemy(checkpoints=enemy_movement_instructions,
                                       enemy_image=enemy[constants.ENEMY_IMAGE], 
                                       number_of_enemies=1, 
                                       enemy_health=enemy[constants.ENEMY_HEALTH],
@@ -464,8 +478,8 @@ class TowerDefenseGame:
             mouse_pos = pygame.mouse.get_pos()
             tower_obj = tower.Tower(tower_type=constants.DART_CAT_TOWER_TYPE, 
                                     image=constants.DART_CAT_IMAGE, 
-                                    x=mouse_pos[position_x], 
-                                    y=mouse_pos[position_y], 
+                                    position_x=mouse_pos[position_x], 
+                                    position_y=mouse_pos[position_y], 
                                     cost=constants.DART_CAT_COST, 
                                     tower_radius=constants.DART_CAT_TOWER_RADIUS, 
                                     tower_fired=False, 
@@ -484,8 +498,8 @@ class TowerDefenseGame:
             mouse_pos = pygame.mouse.get_pos()
             tower_obj = tower.Tower(tower_type=constants.MACHO_CAT_TOWER_TYPE, 
                                     image=constants.MACHO_CAT_IMAGE, 
-                                    x=mouse_pos[position_x], 
-                                    y=mouse_pos[position_y], 
+                                    position_x=mouse_pos[position_x], 
+                                    position_y=mouse_pos[position_y], 
                                     cost=constants.MACHO_CAT_COST, 
                                     tower_radius=constants.MACHO_CAT_TOWER_RADIUS, 
                                     tower_fired=False, 
@@ -546,8 +560,8 @@ class TowerDefenseGame:
         :param: tower_group: The group of the tower
         :param: tower_defense_player: The tower defense player
         """
-        # Can be a minimum and maximum heap depending on the purpose, targeting closest, strongest, first will use
-        # a min heap but last will use a max heap
+        # Can be a minimum and maximum heap depending on the purpose, targeting closest, first will use
+        # a min heap but last and closest will use a max heap
         heap = []
         heapify(heap)
 
@@ -575,9 +589,11 @@ class TowerDefenseGame:
                 # If we're not firing, check for the coordinates to fire
                 if not towers.tower_fired():
                     enemy_to_pop_coordinates = (0, 0)
+                    highest_priority_pop_idx = 0
+                    pop_coordinate_idx = 1
                     # If there is a enemy to pop then search the heap for an element to pop otherwise continue to the next tower
                     if len(heap) > 0:
-                        enemy_to_pop_coordinates = heap[0][1]
+                        enemy_to_pop_coordinates = heap[highest_priority_pop_idx][pop_coordinate_idx]
                     else:
                         continue
 
@@ -623,7 +639,7 @@ class TowerDefenseGame:
                                                                         self.upgrade_tower.get_tower_bottom_right_position()[position_x], 
                                                                         self.upgrade_tower.get_tower_top_left_position()[position_y], 
                                                                         self.upgrade_tower.get_tower_bottom_right_position()[position_y])
-                    obstacle_positions.remove([sell_coordinates[0], sell_coordinates[1]])
+                    obstacle_positions.remove([sell_coordinates[position_x], sell_coordinates[position_y]])
                     tower_group.remove(self.upgrade_tower)
                     self.upgrade_tower = None
                     break
@@ -646,31 +662,30 @@ class TowerDefenseGame:
             upgrade_image = ""
             upgrade_text = ""
             upgrade_price = ""
-            if self.upgrade_tower:
-                if self.upgrade_tower.get_tower_upgrade_level() == 0:
-                    upgrade_image = "Towers/tower_upgrades/AttackSpeed.jpg"
-                    upgrade_text = "Increased attack speed"
-                    upgrade_price = "$200"
-                elif self.upgrade_tower.get_tower_upgrade_level() == 1:
-                    upgrade_image = "Towers/tower_upgrades/Range.jpg"
-                    upgrade_text = "Increased attack range"
-                    upgrade_price = "$400"
-                elif self.upgrade_tower.get_tower_upgrade_level() == 2:
-                    upgrade_image = "Towers/tower_upgrades/extra_damage.jpg"
-                    upgrade_text = "Increased attack damage"
-                    upgrade_price = "$800"
-                elif self.upgrade_tower.get_tower_upgrade_level() == 3:
-                    upgrade_image = "Towers/tower_upgrades/Piercing.jpg"
-                    upgrade_text = "Increased piercing"
-                    upgrade_price = "$1200"
-                else:
-                    upgrade_image = "Towers/tower_upgrades/maxed_out.jpg"
-                    upgrade_text = "Maxed out!"
+            if self.upgrade_tower.get_tower_upgrade_level() == 0:
+                upgrade_image = "Towers/tower_upgrades/AttackSpeed.jpg"
+                upgrade_text = "Increased attack speed"
+                upgrade_price = "$200"
+            elif self.upgrade_tower.get_tower_upgrade_level() == 1:
+                upgrade_image = "Towers/tower_upgrades/Range.jpg"
+                upgrade_text = "Increased attack range"
+                upgrade_price = "$400"
+            elif self.upgrade_tower.get_tower_upgrade_level() == 2:
+                upgrade_image = "Towers/tower_upgrades/extra_damage.jpg"
+                upgrade_text = "Increased attack damage"
+                upgrade_price = "$800"
+            elif self.upgrade_tower.get_tower_upgrade_level() == 3:
+                upgrade_image = "Towers/tower_upgrades/Piercing.jpg"
+                upgrade_text = "Increased piercing"
+                upgrade_price = "$1200"
+            else:
+                upgrade_image = "Towers/tower_upgrades/maxed_out.jpg"
+                upgrade_text = "Maxed out!"
                 
             upgrade_font = self.font4.render(upgrade_text, True, (255, 255, 255))
             upgrade_price = self.font4.render(upgrade_price, True, (255, 255, 255))
-            self.screen.blit((upgrade_font), (1010 + (22 - len(upgrade_text)) * 4, 485))
-            self.screen.blit((upgrade_price), (1080, 630))
+            self.screen.blit(upgrade_font, (1010 + (22 - len(upgrade_text)) * 4, 485))
+            self.screen.blit(upgrade_price, (1080, 630))
 
             upgrade_img = pygame.image.load(upgrade_image).convert_alpha()
             self.upgrade_button = Button(1025, 505, upgrade_img, 0.35)
@@ -679,9 +694,9 @@ class TowerDefenseGame:
             self.sell_icon = Button(25, 700, sell_icon, 0.35)
             self.sell_icon.draw(self.screen)
             upgrade = self.font4.render("Upgrades", True, (255, 255, 255))
-            self.screen.blit((upgrade), (1060, 465))
+            self.screen.blit(upgrade, (1060, 465))
             sell_price = self.font2.render("$" + str(self.upgrade_tower.get_sell_price()), True, (255, 255, 255))
-            self.screen.blit((sell_price), (50, 660))
+            self.screen.blit(sell_price, (50, 660))
             target_button = pygame.image.load("Towers/tower_target/" + self.upgrade_tower.get_target() + ".jpg").convert_alpha()
             self.target_button = Button(785, 700, target_button, 0.75)
             self.target_button.draw(self.screen)
@@ -693,7 +708,6 @@ class TowerDefenseGame:
         :param: player: The tower defense player
         :return:
         """
-
         player_cash = self.font3.render("$" + str(player.get_cash()), True, color.RED)
         player_lives = self.font3.render("Lives:" + str(player.get_lives()), True, color.RED)
         player_round = self.font3.render("Round:" + str(player.get_round()), True, color.RED)
@@ -704,5 +718,5 @@ class TowerDefenseGame:
 
     
 if __name__ == "__main__":
-    tower_defense = TowerDefenseGame(screen, color.WHITE)
+    tower_defense = TowerDefenseGame(screen)
     tower_defense.main_menu()
