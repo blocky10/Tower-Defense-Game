@@ -19,19 +19,11 @@ import math
 import os
 from heapq import heappush, heapify
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
-
 pygame.init()
 mixer.init()
 screen = pygame.display.set_mode([constants.SCREEN_RESOLUTION_WIDTH, constants.SCREEN_RESOLUTION_HEIGHT])
 
-# Using global variable since pygame is single threaded, and will not cause race condition
+# Using global variable since pygame is single threaded
 # This is used to store the list of coordinates to move the enemy
 enemy_movement_instructions = []
 # This is used to save the obstacle positions of the map field and towers 
